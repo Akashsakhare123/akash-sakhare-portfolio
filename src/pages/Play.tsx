@@ -36,10 +36,6 @@ interface ChatMessage {
   content: string;
 }
 
-// API key is now handled server-side in api/chat.js
-
-
-
 const Play = () => {
   const [game, setGame] = useState(new Chess());
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);

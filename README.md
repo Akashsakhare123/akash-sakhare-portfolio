@@ -4,7 +4,7 @@ Production: https://akash-sakhare-portfolio.vercel.app
 
 This is the active source-based implementation cloned from https://github.com/red1-for-hek/portfolio-website at commit `e1491d6d709d4fa6df2ca88277f0c31b5e4f6ea7`.
 
-The original component stylesheets, character model, lighting assets and scene choreography are retained. Profile content is personalized for Akash Sakhare. The earlier Next.js implementation remains intact in the sibling `futuristic-portfolio` directory; it is not this application.
+The original component stylesheets, character model, lighting assets and scene choreography are retained. Profile content is personalized for Akash Sakhare.
 
 ## Local commands
 
@@ -34,10 +34,10 @@ On Windows, use `npm.cmd` or `npx.cmd` if PowerShell restricts npm scripts. Type
 - `src/data/experience.ts`, `education.ts`, `skills.ts`: supplied professional information. Employment (Oct 2024 - Present) and education years (2019 - 2023) are confirmed by the supplied resume; other missing facts are never inferred.
 - `src/config.ts`: maps those facts to the original template's layout. The portfolio itself is a fifth, explicitly attributed template-personalization project.
 - `src/data/technologies.ts`: only technologies from the supplied skill set; icons are served locally.
-- `public/images/avatar-static.png`: still of the same licensed character, used on mobile, reduced-motion and unsupported devices. It is decorative artwork, not Akash's personal photo.
+- `public/images/akash-mobile-hero.jpeg`: Akash's mobile hero portrait. `avatar-static.png` remains the fallback artwork for the chess demonstration.
 - `public/projects/`: actual Trinade website reference plus clearly labeled illustrative covers for projects without screenshots.
 
-The original chess page remains available at `/play`. Its engine is a template demonstration and has no claimed ELO rating or authorship by Akash. The chat panel is a working **local portfolio guide**, answering from supplied facts without an API key. It is not presented as a live generative-AI service. The optional upstream API source remains in the checkout but is not called by the local guide.
+The original chess page remains available at `/play`. Its engine is a template demonstration and has no claimed ELO rating or authorship by Akash. The chat panel is a working **local portfolio guide**, answering from supplied facts without an API key. It is not presented as a live generative-AI service.
 
 ## Runtime and accessibility fixes
 
@@ -47,16 +47,10 @@ Navigation preserves native hash/history behavior while retaining desktop Lenis.
 
 Geist and skill icons are local assets. Font, icon and chess-engine license notices are retained alongside the original MIT LICENSE. Vite uses esbuild minification, and Three loaders use targeted imports to avoid bundling unrelated library modules.
 
-## Provenance and QA
+## Provenance
 
-The original template's [MIT LICENSE](LICENSE) remains unchanged. See [docs/source-clone/REPORT.md](docs/source-clone/REPORT.md) for actual test results, screenshots, changed files and remaining limitations.
-
-Nothing has been deployed, published, pushed, or sent to any external account.
-
-## Reference interaction parity follow-up
-
-See [section comparison and actual retest results](docs/reference-parity/REPORT.md) and the [side-by-side screenshot comparison](docs/reference-parity/comparison.html). Workspace-root and archived-project npm scripts forward to this active application on port 3000.
+The original template's [MIT LICENSE](LICENSE) remains unchanged. The personalized source is published at https://github.com/Akashsakhare123/akash-sakhare-portfolio and deployed at https://akash-sakhare-portfolio.vercel.app.
 
 ## Resume synchronization
 
-The supplied PDF is served unchanged at `public/resume/Akash-Sakhare-Resume.pdf`. Profile, experience, education, skills, FlyHigh details and the local guide use its confirmed facts. The visible printed LinkedIn URL is used on the website because the original PDF contains an unrelated embedded LinkedIn target. See [resume sync verification](docs/resume-sync/REPORT.md).
+The supplied PDF is served unchanged at `public/resume/Akash-Sakhare-Resume.pdf`. Profile, experience, education, skills, FlyHigh details and the local guide use its confirmed facts. The visible printed LinkedIn URL is used on the website because the original PDF contains an unrelated embedded LinkedIn target.
