@@ -27,8 +27,9 @@ const Career = () => {
                 <div className="career-role">
                   <h4>{exp.position}</h4>
                   <h5>{exp.company}</h5>
+                  <p className="career-period">{exp.period}</p>
                 </div>
-                <h3>{getDisplayYear(exp.period)}</h3>
+                <h3 className={exp.period.includes("unconfirmed") ? "unconfirmed-period" : undefined}>{getDisplayYear(exp.period)}</h3>
               </div>
               <p>{exp.description}</p>
             </div>

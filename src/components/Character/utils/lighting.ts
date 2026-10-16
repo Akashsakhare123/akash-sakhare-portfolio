@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { RGBELoader } from "three-stdlib";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 import { gsap } from "gsap";
 
 const setLighting = (scene: THREE.Scene) => {
@@ -27,7 +27,9 @@ const setLighting = (scene: THREE.Scene) => {
       scene.environmentRotation.set(5.76, 85.85, 1);
     });
 
-  function setPointLight(screenLight: any) {
+  function setPointLight(object?: THREE.Object3D) {
+    const screenLight = object as THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial> | undefined;
+    if (!screenLight?.material) return;
     if (screenLight.material.opacity > 0.9) {
       pointLight.intensity = screenLight.material.emissiveIntensity * 20;
     } else {

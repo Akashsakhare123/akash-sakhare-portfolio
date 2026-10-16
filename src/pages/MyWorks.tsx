@@ -4,7 +4,7 @@ import "./MyWorks.css";
 
 const MyWorks = () => {
   return (
-    <div className="myworks-page">
+    <main id="main" tabIndex={-1} className="myworks-page">
       <div className="myworks-header">
         <Link to="/" className="back-button" data-cursor="disable">
           ← Back to Home
@@ -60,7 +60,7 @@ const MyWorks = () => {
           );
         })}
       </div>
-    </div>
+    </main>
   );
 };
 

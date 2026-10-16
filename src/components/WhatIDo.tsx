@@ -9,21 +9,15 @@ const WhatIDo = () => {
     containerRef.current[index] = el;
   };
   useEffect(() => {
-    if (ScrollTrigger.isTouch) {
-      containerRef.current.forEach((container) => {
-        if (container) {
-          container.classList.remove("what-noTouch");
-          container.addEventListener("click", () => handleClick(container));
-        }
-      });
-    }
-    return () => {
-      containerRef.current.forEach((container) => {
-        if (container) {
-          container.removeEventListener("click", () => handleClick(container));
-        }
-      });
-    };
+    const containers=containerRef.current.filter((item):item is HTMLDivElement=>Boolean(item));
+    const cleanups=containers.map(container=>{
+      if(ScrollTrigger.isTouch)container.classList.remove('what-noTouch');
+      const click=()=>handleClick(container);
+      const key=(event:KeyboardEvent)=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();click();}};
+      container.tabIndex=0;container.setAttribute('role','button');container.setAttribute('aria-expanded','false');
+      container.addEventListener('click',click);container.addEventListener('keydown',key);
+      return()=>{container.removeEventListener('click',click);container.removeEventListener('keydown',key);};
+    });return()=>cleanups.forEach(cleanup=>cleanup());
   }, []);
   return (
     <div className="whatIDO">
@@ -145,6 +139,7 @@ export default WhatIDo;
 
 function handleClick(container: HTMLDivElement) {
   container.classList.toggle("what-content-active");
+  container.setAttribute("aria-expanded",String(container.classList.contains("what-content-active")));
   container.classList.remove("what-sibling");
   if (container.parentElement) {
     const siblings = Array.from(container.parentElement.children);
@@ -152,6 +147,7 @@ function handleClick(container: HTMLDivElement) {
     siblings.forEach((sibling) => {
       if (sibling !== container) {
         sibling.classList.remove("what-content-active");
+        if(sibling.classList.contains("what-content"))sibling.setAttribute("aria-expanded","false");
         sibling.classList.toggle("what-sibling");
       }
     });

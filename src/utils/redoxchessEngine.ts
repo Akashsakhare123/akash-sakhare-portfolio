@@ -42,7 +42,8 @@ class RedoxChessEngine {
 
   getBestMove(onMove: (move: string) => void, depth = 15) {
     this.onMoveCallback = onMove;
-    this.send(`go depth ${depth}`);
+    // Bound CPU use and response latency across browser engines.
+    this.send(`go depth ${depth} movetime 1200`);
   }
 
   stop() {

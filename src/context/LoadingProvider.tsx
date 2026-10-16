@@ -1,60 +1,22 @@
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import Loading from "../components/Loading";
-
-interface LoadingType {
-  isLoading: boolean;
-  setIsLoading: (state: boolean) => void;
-  setLoading: (percent: number) => void;
-}
-
-export const LoadingContext = createContext<LoadingType | null>(null);
-
-export const LoadingProvider = ({ children }: PropsWithChildren) => {
-  const [isLoading, setIsLoading] = useState(() => {
-    // Skip loading on mobile
-    if (window.innerWidth <= 768) return false;
-    return true;
-  });
-  const [loading, setLoading] = useState(0);
-
-  const value = {
-    isLoading,
-    setIsLoading,
-    setLoading,
-  };
-  useEffect(() => {
-    // Auto-start animations on mobile since there's no 3D model
-    if (window.innerWidth <= 768) {
-      import("../components/utils/initialFX").then((module) => {
-        if (module.initialFX) {
-          setTimeout(() => {
-            module.initialFX();
-          }, 100);
-        }
-      });
-    }
-  }, []);
-
-  useEffect(() => {}, [loading]);
-
-  return (
-    <LoadingContext.Provider value={value as LoadingType}>
-      {isLoading && <Loading percent={loading} />}
-      <main className="main-body">{children}</main>
-    </LoadingContext.Provider>
-  );
-};
-
-export const useLoading = () => {
-  const context = useContext(LoadingContext);
-  if (!context) {
-    throw new Error("useLoading must be used within a LoadingProvider");
-  }
-  return context;
+﻿import {PropsWithChildren,useCallback,useEffect,useMemo,useState} from 'react';
+import Loading from '../components/Loading';
+import {LoadingContext} from './useLoading';
+function canRender3D(){if(innerWidth<=1024||matchMedia('(prefers-reduced-motion: reduce)').matches)return false;try{const canvas=document.createElement('canvas');const gl=canvas.getContext('webgl2');if(!gl)return false;gl.getExtension('WEBGL_lose_context')?.loseContext();return true;}catch{return false;}}
+export const LoadingProvider=({children}:PropsWithChildren)=>{
+ const [use3D,setUse3D]=useState(canRender3D);
+ const [isLoading,setIsLoading]=useState(use3D);
+ const [loading,setLoading]=useState(0);
+ const [sceneReady,setSceneReady]=useState(false);
+ const finish=useCallback((value:boolean)=>setIsLoading(value),[]);
+ const onSceneReady=useCallback(()=>setSceneReady(true),[]);
+ const onSceneError=useCallback(()=>{setSceneReady(false);setUse3D(false);setIsLoading(false);},[]);
+ useEffect(()=>{const media=matchMedia('(min-width:1025px) and (prefers-reduced-motion:no-preference)');const update=()=>{const enabled=canRender3D();setSceneReady(false);setUse3D(enabled);setIsLoading(enabled);};media.addEventListener('change',update);return()=>media.removeEventListener('change',update);},[]);
+ useEffect(()=>{document.body.classList.toggle('static-experience',!use3D||(!isLoading&&!sceneReady));},[use3D,isLoading,sceneReady]);
+ useEffect(()=>{if(isLoading)return;const timeout=setTimeout(()=>{void import('../components/utils/initialFX').then(module=>module.initialFX());},100);return()=>clearTimeout(timeout);},[isLoading]);
+ // Release the loader on a slow device, but let a healthy scene finish loading.
+ // Unmounting it here permanently replaced eye tracking with a still image.
+ useEffect(()=>{if(!isLoading)return;const timeout=setTimeout(()=>setIsLoading(false),20000);return()=>clearTimeout(timeout);},[isLoading]);
+ useEffect(()=>{document.body.style.overflowY=isLoading?'hidden':'auto';return()=>{document.body.style.overflowY='auto';};},[isLoading]);
+ const value=useMemo(()=>({isLoading,setIsLoading:finish,setLoading,use3D,onSceneReady,onSceneError}),[isLoading,finish,use3D,onSceneReady,onSceneError]);
+ return <LoadingContext.Provider value={value}>{isLoading&&<Loading percent={loading}/>}<main id="main" tabIndex={-1} className="main-body">{children}</main></LoadingContext.Provider>;
 };

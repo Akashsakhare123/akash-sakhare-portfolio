@@ -3,15 +3,17 @@ import WorkImage from "./WorkImage";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect } from "react";
+import { useLoading } from "../context/useLoading";
 import { config } from "../config";
 import { Link } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Work = () => {
+  const {use3D}=useLoading();
   useEffect(() => {
     // Disable pinning on mobile to allow scrolling
-    if (window.innerWidth <= 768) return;
+    if (!use3D || window.innerWidth <= 1024 || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let translateX: number = 0;
 
@@ -23,18 +25,18 @@ const Work = () => {
         .getBoundingClientRect().left;
       const rect = box[0].getBoundingClientRect();
       const parentWidth = box[0].parentElement!.getBoundingClientRect().width;
-      let padding: number =
+      const padding: number =
         parseInt(window.getComputedStyle(box[0]).padding) / 2;
       translateX = rect.width * box.length - (rectLeft + parentWidth) + padding;
     }
 
     setTranslateX();
 
-    let timeline = gsap.timeline({
+    const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: ".work-section",
         start: "top top",
-        end: `+=${translateX}`,
+        end: () => `+=${translateX}`,
         scrub: 1,
         pin: true,
         pinSpacing: true,
@@ -45,21 +47,24 @@ const Work = () => {
     });
 
     timeline.to(".work-flex", {
-      x: -translateX,
+      x: () => -translateX,
       ease: "none",
     });
 
+    const recalculate=()=>setTranslateX();
+    ScrollTrigger.addEventListener("refreshInit",recalculate);
     // Refresh ScrollTrigger after layout settles
     ScrollTrigger.refresh();
 
     // Clean up
     return () => {
+      ScrollTrigger.removeEventListener("refreshInit",recalculate);
       timeline.kill();
       ScrollTrigger.getById("work")?.kill();
     };
-  }, []);
+  }, [use3D]);
   return (
-    <div className="work-section" id="work">
+    <div className="work-section" id="work" tabIndex={-1}>
       <div className="work-container section-container">
         <h2>
           My <span>Work</span>

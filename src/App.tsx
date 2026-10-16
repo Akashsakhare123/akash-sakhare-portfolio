@@ -1,12 +1,13 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/react";
+
+
 import "./App.css";
 
 const CharacterModel = lazy(() => import("./components/Character"));
 const MainContainer = lazy(() => import("./components/MainContainer"));
 const MyWorks = lazy(() => import("./pages/MyWorks"));
+const Project = lazy(() => import("./pages/Project"));
 const Play = lazy(() => import("./pages/Play"));
 import { LoadingProvider } from "./context/LoadingProvider";
 
@@ -44,9 +45,11 @@ const App = () => {
             </Suspense>
           }
         />
+        <Route path="/projects/:slug" element={<Suspense fallback={<p role="status">Loading project...</p>}><Project /></Suspense>} />
+        <Route path="*" element={<main id="main" className="myworks-page"><h1>Page not found</h1><a href="/">Back to Home</a></main>} />
       </Routes>
-      <Analytics />
-      <SpeedInsights />
+
+
     </BrowserRouter>
   );
 };

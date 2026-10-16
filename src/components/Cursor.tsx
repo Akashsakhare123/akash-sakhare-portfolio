@@ -1,54 +1,29 @@
-import { useEffect, useRef } from "react";
-import "./styles/Cursor.css";
-import gsap from "gsap";
-
-const Cursor = () => {
-  const cursorRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    let hover = false;
-    const cursor = cursorRef.current!;
-    const mousePos = { x: 0, y: 0 };
-    const cursorPos = { x: 0, y: 0 };
-    document.addEventListener("mousemove", (e) => {
-      mousePos.x = e.clientX;
-      mousePos.y = e.clientY;
-    });
-    requestAnimationFrame(function loop() {
-      if (!hover) {
-        const delay = 6;
-        cursorPos.x += (mousePos.x - cursorPos.x) / delay;
-        cursorPos.y += (mousePos.y - cursorPos.y) / delay;
-        gsap.to(cursor, { x: cursorPos.x, y: cursorPos.y, duration: 0.1 });
-        // cursor.style.transform = `translate(${cursorPos.x}px, ${cursorPos.y}px)`;
-      }
-      requestAnimationFrame(loop);
-    });
-    document.querySelectorAll("[data-cursor]").forEach((item) => {
-      const element = item as HTMLElement;
-      element.addEventListener("mouseover", (e: MouseEvent) => {
-        const target = e.currentTarget as HTMLElement;
-        const rect = target.getBoundingClientRect();
-
-        if (element.dataset.cursor === "icons") {
-          cursor.classList.add("cursor-icons");
-
-          gsap.to(cursor, { x: rect.left, y: rect.top, duration: 0.1 });
-          //   cursor.style.transform = `translate(${rect.left}px,${rect.top}px)`;
-          cursor.style.setProperty("--cursorH", `${rect.height}px`);
-          hover = true;
-        }
-        if (element.dataset.cursor === "disable") {
-          cursor.classList.add("cursor-disable");
-        }
-      });
-      element.addEventListener("mouseout", () => {
-        cursor.classList.remove("cursor-disable", "cursor-icons");
-        hover = false;
-      });
-    });
-  }, []);
-
-  return <div className="cursor-main" ref={cursorRef}></div>;
-};
-
-export default Cursor;
+import {useEffect,useRef} from 'react';
+import gsap from 'gsap';
+import './styles/Cursor.css';
+const Cursor=()=>{
+ const ref=useRef<HTMLDivElement>(null);
+ useEffect(()=>{
+  const cursor=ref.current;if(!cursor)return;
+  const media=gsap.matchMedia();
+  media.add('(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)',()=>{
+   cursor.classList.add('cursor-active');
+   let hover=false,frame=0;
+   const mouse={x:innerWidth/2,y:innerHeight/2},position={...mouse};
+   const move=(event:PointerEvent)=>{mouse.x=event.clientX;mouse.y=event.clientY;};
+   const loop=()=>{if(!hover){position.x+=(mouse.x-position.x)/6;position.y+=(mouse.y-position.y)/6;gsap.to(cursor,{x:position.x,y:position.y,duration:.1,overwrite:true});}frame=requestAnimationFrame(loop);};
+   const enter=(event:PointerEvent)=>{
+    const target=event.target instanceof Element?event.target.closest<HTMLElement>('[data-cursor]'):null;
+    if(!target||target.contains(event.relatedTarget as Node))return;
+    cursor.classList.remove('cursor-disable','cursor-icons');
+    if(target.dataset.cursor==='icons'){const rect=target.getBoundingClientRect();cursor.classList.add('cursor-icons');cursor.style.setProperty('--cursorH',rect.height+'px');gsap.to(cursor,{x:rect.left,y:rect.top,duration:.1,overwrite:true});hover=true;}
+    if(target.dataset.cursor==='disable')cursor.classList.add('cursor-disable');
+   };
+   const leave=(event:PointerEvent)=>{const target=event.target instanceof Element?event.target.closest('[data-cursor]'):null;if(!target||target.contains(event.relatedTarget as Node))return;cursor.classList.remove('cursor-disable','cursor-icons');hover=false;};
+   document.addEventListener('pointermove',move);document.addEventListener('pointerover',enter);document.addEventListener('pointerout',leave);frame=requestAnimationFrame(loop);
+   return()=>{cancelAnimationFrame(frame);document.removeEventListener('pointermove',move);document.removeEventListener('pointerover',enter);document.removeEventListener('pointerout',leave);gsap.killTweensOf(cursor);cursor.classList.remove('cursor-active','cursor-disable','cursor-icons');};
+  });
+  return()=>media.revert();
+ },[]);
+ return <div className="cursor-main" ref={ref} aria-hidden="true"/>;
+};export default Cursor;

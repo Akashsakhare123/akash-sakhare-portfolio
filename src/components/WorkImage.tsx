@@ -30,6 +30,7 @@ const WorkImage = (props: Props) => {
         isExternalLink ? (
           <a
             className="work-image-in"
+            aria-label={`View case study: ${props.alt ?? "project"}`}
             href={props.link}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={() => setIsVideo(false)}
@@ -40,12 +41,13 @@ const WorkImage = (props: Props) => {
             <div className="work-link">
               <MdArrowOutward />
             </div>
-            <img src={props.image} alt={props.alt} loading="lazy" decoding="async" />
+            <img src={props.image} alt={props.alt} width={1200} height={750} loading="lazy" decoding="async" />
             {isVideo && <video src={video} autoPlay muted playsInline loop></video>}
           </a>
         ) : (
           <Link
             className="work-image-in"
+            aria-label={`View case study: ${props.alt ?? "project"}`}
             to={props.link}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={() => setIsVideo(false)}
@@ -54,18 +56,19 @@ const WorkImage = (props: Props) => {
             <div className="work-link">
               <MdArrowOutward />
             </div>
-            <img src={props.image} alt={props.alt} loading="lazy" decoding="async" />
+            <img src={props.image} alt={props.alt} width={1200} height={750} loading="lazy" decoding="async" />
             {isVideo && <video src={video} autoPlay muted playsInline loop></video>}
           </Link>
         )
       ) : (
         <div
           className="work-image-in"
+            aria-label={`View case study: ${props.alt ?? "project"}`}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={() => setIsVideo(false)}
           data-cursor={"disable"}
         >
-          <img src={props.image} alt={props.alt} loading="lazy" decoding="async" />
+          <img src={props.image} alt={props.alt} width={1200} height={750} loading="lazy" decoding="async" />
           {isVideo && <video src={video} autoPlay muted playsInline loop></video>}
         </div>
       )}

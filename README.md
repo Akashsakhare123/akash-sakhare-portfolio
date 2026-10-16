@@ -1,99 +1,62 @@
-# 🚀 3D Developer Portfolio Website (React + TypeScript + Three.js)
+﻿# Akash Sakhare — original-source portfolio
 
-[![3D portfolio preview (click to watch video)](./Screenshot_2026-04-08_22-10-00.png)](./video.mp4)
+Production: https://akash-sakhare-portfolio.vercel.app
 
-A modern, high-performance **3D developer portfolio website** built with **React**, **TypeScript**, **Three.js**, **GSAP**, and **WebGL**.
+This is the active source-based implementation cloned from https://github.com/red1-for-hek/portfolio-website at commit `e1491d6d709d4fa6df2ca88277f0c31b5e4f6ea7`.
 
-If you’re a developer looking for a **portfolio template** that feels premium, interactive, and memorable—this repo is for you.
+The original component stylesheets, character model, lighting assets and scene choreography are retained. Profile content is personalized for Akash Sakhare. The earlier Next.js implementation remains intact in the sibling `futuristic-portfolio` directory; it is not this application.
 
-> Live preview: https://www.redoyanulhaque.me/
+## Local commands
 
----
+From this directory:
 
-## ✨ Highlights
-
-- **3D / WebGL experience** powered by **Three.js**
-- Smooth animations with **GSAP**
-- Modern **React + TypeScript** codebase
-- Fast, responsive UI (desktop + mobile)
-- Designed for developers, engineers, programmers, and creators
-
----
-
-## 🧰 Tech Stack
-
-- **React**
-- **TypeScript**
-- **Three.js / WebGL**
-- **GSAP**
-- **HTML / CSS / JavaScript**
-
----
-
-## 🚀 Getting Started
-
-### 1) Clone
-
-```bash
-git clone https://github.com/red1-for-hek/portfolio-website.git
-cd portfolio-website
-```
-
-### 2) Install
-
-```bash
+```sh
 npm install
-```
-
-### 3) Run locally
-
-```bash
 npm run dev
 ```
 
-### 4) Build
+Vite prints the local preview URL, normally http://localhost:3000. To use a chosen port, run `npm run dev -- --port 3000 --strictPort`.
 
-```bash
+```sh
+npm run lint
+npm run typecheck
 npm run build
+npm run preview
+npm run test:e2e
 ```
 
----
+On Windows, use `npm.cmd` or `npx.cmd` if PowerShell restricts npm scripts. Type checking uses `tsc -b` because this repository has separate application and Vite project references. The browser tests use a production build on port 4173. Install Playwright browser engines with `npx playwright install firefox webkit` if needed; the Chrome project uses installed Google Chrome.
 
-## 🧩 Customize (Quick Guide)
+## Personalization
 
-Typical things you’ll want to update:
+- `src/data/profile.ts`: supplied name, role, summary, email, GitHub, and resume-confirmed phone, Pune location, LinkedIn and downloadable PDF.
+- `src/data/projects.ts`: four supplied project descriptions, contributions, architecture and outcomes.
+- `src/data/experience.ts`, `education.ts`, `skills.ts`: supplied professional information. Employment (Oct 2024 - Present) and education years (2019 - 2023) are confirmed by the supplied resume; other missing facts are never inferred.
+- `src/config.ts`: maps those facts to the original template's layout. The portfolio itself is a fifth, explicitly attributed template-personalization project.
+- `src/data/technologies.ts`: only technologies from the supplied skill set; icons are served locally.
+- `public/images/avatar-static.png`: still of the same licensed character, used on mobile, reduced-motion and unsupported devices. It is decorative artwork, not Akash's personal photo.
+- `public/projects/`: actual Trinade website reference plus clearly labeled illustrative covers for projects without screenshots.
 
-- **Your name + hero section text**
-- **Projects list**
-- **Social links** (GitHub, LinkedIn, email)
-- **SEO meta title/description**
+The original chess page remains available at `/play`. Its engine is a template demonstration and has no claimed ELO rating or authorship by Akash. The chat panel is a working **local portfolio guide**, answering from supplied facts without an API key. It is not presented as a live generative-AI service. The optional upstream API source remains in the checkout but is not called by the local guide.
 
----
+## Runtime and accessibility fixes
 
-## ⭐ Support
+The template's loader now has cleanup and a bounded failure path. A slow healthy scene continues loading after the loader deadline, then automatically replaces the temporary still. Page-ready effects and scrolling initialize independently of the loading-screen component. Cursor and career progression no longer depend on successful WebGL initialization. Tablet, reduced-motion and unsupported-WebGL users bypass the expensive scene. The original 3D model still drives the desktop experience, including pointer response and the monitor/desk choreography. Rendering stops after the character is offscreen and when the document is hidden; event handlers, animation frames and scroll triggers are cleaned up on navigation. Technology background video plays only when nearby and allowed by motion preferences.
 
-If you found this useful:
+Navigation preserves native hash/history behavior while retaining desktop Lenis. Project detail pages reuse the original visual language. Keyboard focus, service controls, chess squares and chat status labels are accessible. `src/accessibility.css` provides additive fallback and accessibility rules; it does not replace the original design.
 
-- Please **star** the repository (it helps a lot)
-- Share it with a friend who needs a portfolio template
-- Sponsor via the **Sponsor** button on GitHub (if available in your region)
+Geist and skill icons are local assets. Font, icon and chess-engine license notices are retained alongside the original MIT LICENSE. Vite uses esbuild minification, and Three loaders use targeted imports to avoid bundling unrelated library modules.
 
----
+## Provenance and QA
 
-## 🤝 Connect
+The original template's [MIT LICENSE](LICENSE) remains unchanged. See [docs/source-clone/REPORT.md](docs/source-clone/REPORT.md) for actual test results, screenshots, changed files and remaining limitations.
 
-- LinkedIn: https://www.linkedin.com/in/red1-for-hek/
+Nothing has been deployed, published, pushed, or sent to any external account.
 
----
+## Reference interaction parity follow-up
 
-## 🏷️ Recommended GitHub Topics (add in repo settings)
+See [section comparison and actual retest results](docs/reference-parity/REPORT.md) and the [side-by-side screenshot comparison](docs/reference-parity/comparison.html). Workspace-root and archived-project npm scripts forward to this active application on port 3000.
 
-Add these topics to improve GitHub search visibility:
+## Resume synchronization
 
-`portfolio` `developer-portfolio` `portfolio-website` `portfolio-template` `3d-portfolio` `react` `typescript` `threejs` `webgl` `gsap` `frontend` `vite`
-
----
-
-## 🪪 License
-
-This project is open source and available under the **MIT License**. See [LICENSE](LICENSE).
+The supplied PDF is served unchanged at `public/resume/Akash-Sakhare-Resume.pdf`. Profile, experience, education, skills, FlyHigh details and the local guide use its confirmed facts. The visible printed LinkedIn URL is used on the website because the original PDF contains an unrelated embedded LinkedIn target. See [resume sync verification](docs/resume-sync/REPORT.md).

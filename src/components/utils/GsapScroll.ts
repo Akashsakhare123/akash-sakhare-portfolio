@@ -5,10 +5,7 @@ export function setCharTimeline(
   character: THREE.Object3D<THREE.Object3DEventMap> | null,
   camera: THREE.PerspectiveCamera
 ) {
-  let intensity: number = 0;
-  setInterval(() => {
-    intensity = Math.random();
-  }, 200);
+
   const tl1 = gsap.timeline({
     scrollTrigger: {
       trigger: ".landing-section",
@@ -36,10 +33,13 @@ export function setCharTimeline(
       invalidateOnRefresh: true,
     },
   });
-  let screenLight: any, monitor: any;
-  character?.children.forEach((object: any) => {
+  let screenLight!: THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>;
+  let monitor!: THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>;
+  character?.children.forEach((node) => {
+    const object=node as THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>;
     if (object.name === "Plane004") {
-      object.children.forEach((child: any) => {
+      object.children.forEach((node) => {
+        const child=node as THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>;
         child.material.transparent = true;
         child.material.opacity = 0;
         if (child.material.name === "Material.027") {
@@ -53,14 +53,14 @@ export function setCharTimeline(
       object.material.opacity = 0;
       object.material.emissive.set("#C8BFFF");
       gsap.timeline({ repeat: -1, repeatRefresh: true }).to(object.material, {
-        emissiveIntensity: () => intensity * 8,
+        emissiveIntensity: () => Math.random() * 8,
         duration: () => Math.random() * 0.6,
         delay: () => Math.random() * 0.1,
       });
       screenLight = object;
     }
   });
-  let neckBone = character?.getObjectByName("spine005");
+  const neckBone = character?.getObjectByName("spine005");
   if (window.innerWidth > 1024) {
     if (character) {
       tl1

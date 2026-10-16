@@ -27,3 +27,16 @@ dist-ssr
 backup/
 .env
 redoxchess-engine/
+playwright-report/
+test-results/
+
+# Local document extraction tools
+.tools/
+
+# Local Vercel project link
+.vercel/
+
+# Generated QA artifacts (reports remain available locally)
+docs/**/*.png
+docs/**/*.html
+docs/**/*.json

@@ -4,7 +4,7 @@ export class TextSplitter {
   words: Element[] = [];
   lines: Element[] = [];
   elements: Element[] = [];
-  selector: string | Function;
+  selector: string;
   private originalHTML: Map<Element, string> = new Map();
 
   constructor(target: string | Element | NodeListOf<Element> | Element[], vars?: { type?: string; linesClass?: string }) {
@@ -47,7 +47,10 @@ export class TextSplitter {
   }
 
   private splitChars(element: Element) {
-    const text = element.textContent || "";
+    // Only authored line breaks split a heading; nested layout divs do not.
+    const content = element.cloneNode(true) as Element;
+    content.querySelectorAll('br').forEach(lineBreak => lineBreak.replaceWith('\n'));
+    const text = content.textContent || "";
     const chars = text.split("");
     
     element.innerHTML = chars
@@ -100,7 +103,7 @@ export class TextSplitter {
       if (items.length === 0) return;
 
       let currentLine: Element[] = [];
-      let lines: Element[][] = [];
+      const lines: Element[][] = [];
       let currentTop = 0;
 
       items.forEach((item) => {
@@ -140,6 +143,7 @@ export class TextSplitter {
         });
       });
 
+      element.querySelectorAll("br").forEach(lineBreak=>lineBreak.remove());
       this.lines.push(...Array.from(element.querySelectorAll(`.${linesClass}`)));
     });
   }

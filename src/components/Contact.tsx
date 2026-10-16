@@ -57,7 +57,7 @@ const Contact = () => {
   }, []);
 
   return (
-    <div className="contact-section section-container" id="contact">
+    <div className="contact-section section-container" id="contact" tabIndex={-1}>
       <div className="contact-container">
         <h3>{config.developer.fullName}</h3>
         <div className="contact-flex">
@@ -68,6 +68,8 @@ const Contact = () => {
                 {config.contact.email}
               </a>
             </p>
+            <h4>Phone</h4>
+            <p><a href={`tel:${config.contact.phone}`} data-cursor="disable">{config.contact.phoneDisplay}</a></p>
             <h4>Location</h4>
             <p>
               <span>{config.social.location}</span>
@@ -75,55 +77,12 @@ const Contact = () => {
           </div>
           <div className="contact-box">
             <h4>Social</h4>
-            <a
-              href={config.contact.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="disable"
-              className="contact-social"
-            >
-              Github <MdArrowOutward />
-            </a>
-            <a
-              href={config.contact.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="disable"
-              className="contact-social"
-            >
-              Linkedin <MdArrowOutward />
-            </a>
-            <a
-              href={config.contact.twitter}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="disable"
-              className="contact-social"
-            >
-              Twitter <MdArrowOutward />
-            </a>
-            <a
-              href={config.contact.facebook}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="disable"
-              className="contact-social"
-            >
-              Facebook <MdArrowOutward />
-            </a>
-            <a
-              href={config.contact.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="disable"
-              className="contact-social"
-            >
-              Instagram <MdArrowOutward />
-            </a>
+            {config.developer.resume && <a className="contact-social" href={config.developer.resume} download="Akash-Sakhare-Resume.pdf">Download resume (PDF)<MdArrowOutward aria-hidden="true"/></a>}
+            {[{url:config.contact.github,label:'Github'},{url:config.contact.linkedin,label:'Linkedin'},{url:config.contact.twitter,label:'Twitter'},{url:config.contact.facebook,label:'Facebook'},{url:config.contact.instagram,label:'Instagram'}].filter(link=>link.url).map(link=><a href={link.url} target="_blank" rel="noopener noreferrer" data-cursor="disable" className="contact-social" key={link.label}>{link.label}<MdArrowOutward aria-hidden="true"/></a>)}
           </div>
           <div className="contact-box">
             <h2>
-              Designed and Developed <br /> by <span>{config.developer.fullName}</span>
+              Developer Portfolio <br /> <span>{config.developer.fullName}</span>
             </h2>
             <h5>
               <MdCopyright /> {new Date().getFullYear()}
