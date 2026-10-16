@@ -33,8 +33,11 @@ const Landing = ({ children }: PropsWithChildren) => {
           <div className="mobile-photo">
             <img
               src={config.developer.photo}
-              alt="Decorative developer avatar from the original portfolio template"
+              alt={`${config.developer.fullName}, ${config.developer.title}`}
+              width={1200}
+              height={1600}
               loading="eager"
+              fetchPriority="high"
               decoding="async"
             />
           </div>

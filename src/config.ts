@@ -11,7 +11,7 @@ const projectCards = [
  {category:'Full Stack / Management',technologies:'React, Node.js, Express.js, MongoDB'},
 ];
 export const config = {
- developer: {name:profile.name.split(' ')[0],fullName:profile.name,title:profile.title,description:profile.summary,primaryRole:'Java Developer',secondaryRole:'Full-Stack Developer',photo:'/images/avatar-static.png',resume:profile.resumePath},
+ developer: {name:profile.name.split(' ')[0],fullName:profile.name,title:profile.title,description:profile.summary,primaryRole:'Java Developer',secondaryRole:'Full-Stack Developer',photo:'/images/akash-mobile-hero.jpeg',resume:profile.resumePath},
  social:{github:'Akashsakhare123',email:profile.email,location:profile.location},
  about:{title:'About Me',description:profile.summary},
  experiences:[...experiences.map(exp=>({position:exp.title,company:exp.context,period:exp.period??'Dates unconfirmed',description:exp.description+' '+exp.details.join(' ')})),...education.map(item=>({position:'BE · Electronics & Telecommunication',company:item.institution,period:item.graduationYear?.toString()??'Year unconfirmed',description:`Bachelor of Engineering (BE) in Electronics and Telecommunication (ENTC). Studied from ${item.startYear} to ${item.graduationYear}.`}))],

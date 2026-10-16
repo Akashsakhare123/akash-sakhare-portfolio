@@ -129,7 +129,13 @@
     position: relative !important;
     width: 100%;
     max-width: 380px;
+    height: clamp(360px, 54svh, 500px);
     margin: 0 auto;
+    overflow: hidden;
+    border-radius: 22px;
+    border: 1px solid rgba(194, 164, 255, 0.24);
+    background: rgba(255, 255, 255, 0.025);
+    box-shadow: 0 22px 70px rgba(0, 0, 0, 0.36), 0 0 42px rgba(194, 164, 255, 0.12);
     z-index: 1;
     order: 2;
     /* Second: Photo */
@@ -142,9 +148,10 @@
 
   .mobile-photo img {
     width: 100%;
-    height: auto;
-    object-fit: contain;
-    filter: drop-shadow(0 0 40px rgba(194, 164, 255, 0.4));
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center 34%;
   }
 }
 
